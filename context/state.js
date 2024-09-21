@@ -6,9 +6,10 @@ export const useAppStore = create(
     (set, get) => ({
       isDynamicAuth: false,
       isWorldCoinAuth: false,
+      worldCoinData: {},
       setDynamicAuth: () => set({ isDynamicAuth: true }),
-      setWorldCoinAuth: () => set({ isWorldCoinAuth: true }),
-      handleLogout: () => set({ isDynamicAuth: false, isWorldCoinAuth: false }),
+      setWorldCoinAuth: (value) => set({ isWorldCoinAuth: true, worldCoinData: value }),
+      handleLogout: () => set({ isDynamicAuth: false, isWorldCoinAuth: false, worldCoinData: {} }),
     }),
     {
       name: 'hodlhabits-storage', 

@@ -2,13 +2,16 @@
 
 import React from "react";
 import { useRef, useState } from "react";
-import { domAnimation, LazyMotion, m } from "framer-motion";
+import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
 
 import MultiStepSidebar from "./MultistepSidebar";
 import MultistepNavigationButtons from "./MultistepNavigationButtons";
 import BasicChallengeInfoForm from "./BasicChallengeInfoForm";
 import toast from "react-hot-toast";
 import VideoSelector from "./VideoSelector";
+import ChallengeReview from "./ChallengeReview";
+import Image from "next/image";
+import ChangingText from "./ChallengeCreating/ChangingText";
 
 const variants = {
   enter: (direction) => ({
@@ -28,6 +31,7 @@ const variants = {
 };
 
 const CreateChallenge = () => {
+  const [loadingChallengeCreation, setLoadingChallengeCreation] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
   const challengeDetailsFormRef = useRef(null);
   const [challengeVideos, setChallengeVideos] = useState([]);
@@ -113,6 +117,10 @@ const CreateChallenge = () => {
     onNext();
   }
 
+  const handleCreateChallenge = () => {
+    setLoadingChallengeCreation(true);
+  }
+
   const content = React.useMemo(() => {
     let component = <BasicChallengeInfoForm 
       formRef={challengeDetailsFormRef} 
@@ -125,7 +133,7 @@ const CreateChallenge = () => {
         component = <VideoSelector addChallengeVideo={addChallengeVideo} removeChallengeVideo={removeChallengeVideo} challengeVideos={challengeVideos}/>;
         break;
       case 2:
-        component = <><h1>Thrird</h1></>;
+        component = <ChallengeReview challengeDetails={challengeDetails} challengeVideos={challengeVideos} />;
         break;
     }
 
@@ -154,26 +162,48 @@ const CreateChallenge = () => {
   }, [direction, page]);
 
   return (
-    <MultiStepSidebar
-      currentPage={page}
-      onBack={onBack}
-      onChangePage={onChangePage}
-      onNext={onNext}
-    >
-      <div className="relative flex h-fit w-full flex-col pt-6 text-center lg:h-full lg:justify-center lg:pt-0">
-        {content}
-        <MultistepNavigationButtons
-          backButtonProps={{isDisabled: page === 0}}
-          className="hidden justify-start lg:flex"
-          nextButtonProps={{
-            children: page === 0 ? "Select videos" : page === 1 ? "Confirm details" : "Create challenge",
-          }}
-          stepCallback={page === 0 ? handleBasicChallengeInfoFormSubmit : page === 1 ? handleVideosSetup : null}
+    !loadingChallengeCreation ? (
+      <AnimatePresence
+        mode="wait"
+        initial={false}
+        custom={direction}
+        onExitComplete={() => window.scrollTo(0, 0)}
+      >
+        <MultiStepSidebar
+          currentPage={page}
           onBack={onBack}
+          onChangePage={onChangePage}
           onNext={onNext}
+        >
+          <div className="relative flex h-fit w-full flex-col pt-6 text-center lg:h-full lg:justify-center lg:pt-0">
+            {content}
+            <MultistepNavigationButtons
+              backButtonProps={{isDisabled: page === 0}}
+              className="hidden justify-start lg:flex"
+              nextButtonProps={{
+                children: page === 0 ? "Select videos" : page === 1 ? "Confirm details" : "Create challenge",
+              }}
+              stepCallback={
+                page === 0 ? handleBasicChallengeInfoFormSubmit : 
+                page === 1 ? handleVideosSetup : 
+                handleCreateChallenge
+              }
+              onBack={onBack}
+              onNext={onNext}
+            />
+          </div>
+        </MultiStepSidebar>
+      </AnimatePresence>
+    ) : (
+      <section className="flex flex-col justify-center items-center h-full">
+        <Image 
+          width={150} 
+          height={0} 
+          src='/create-challenge.gif' 
         />
-      </div>
-    </MultiStepSidebar>
+        <ChangingText words={["awesome", "amazing", "stunning", "extraordinary", "spectacular"]} />
+    </section>
+    )
   );
 }
 

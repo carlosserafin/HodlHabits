@@ -1,8 +1,9 @@
 "use client";
 
-import { cn } from "@nextui-org/react";
+import { Avatar, cn } from "@nextui-org/react";
 import { CustomCheckbox } from "./CustomCheckbox";
 import { CheckboxGroup, DateRangePicker, Input, TimeInput } from "@nextui-org/react";
+import { DEFAULT_TOKEN } from "@/constants/token-conf";
 
 const BasicChallengeInfoForm = ({ formRef, challengeDetails, setChallengeDetails }) => {
   const inputProps = {
@@ -53,7 +54,7 @@ const BasicChallengeInfoForm = ({ formRef, challengeDetails, setChallengeDetails
         <Input
           required
           isRequired
-          className="col-span-4"
+          className="col-span-5"
           label="Stake amount"
           name="challenge-stake"
           placeholder="Challenge stake"
@@ -62,13 +63,19 @@ const BasicChallengeInfoForm = ({ formRef, challengeDetails, setChallengeDetails
           max={1000}
           onChange={(e) => setChallengeDetails((prev) => ({ ...prev, stake: e.target.value }))}
           defaultValue={challengeDetails.stake}
+          endContent={
+            <div className="flex gap-2">
+              <p>{DEFAULT_TOKEN.name}</p>
+              <Avatar alt="Token icon" className="h-6 w-6" src={DEFAULT_TOKEN.icon} />
+            </div>
+          }
           {...inputProps}
         />
 
         <DateRangePicker 
           required
           isRequired
-          className="col-span-8"
+          className="col-span-7"
           label="Duration"
           visibleMonths={2}
           pageBehavior="single"

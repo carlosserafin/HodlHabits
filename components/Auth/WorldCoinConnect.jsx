@@ -1,17 +1,26 @@
 "use client"
 
 import Image from 'next/image';
-import toast from 'react-hot-toast';
 import { Button } from '@nextui-org/react';
+import { useTransitionRouter } from 'next-view-transitions'
 import { IDKitWidget, VerificationLevel } from '@worldcoin/idkit'
+import { useAppStore } from '@/context/state';
+import toast from 'react-hot-toast';
 
 const WorldCoinConnect = () => {
-    const verifyProof = async (proof) => {
-        toast.error("Verification failed. Please try again.")
-    };
+    const router = useTransitionRouter();
+    const { setWorldCoinAuth } = useAppStore();
     
-    const onSuccess = () => {
-        toast.success("Verification successfull!")
+    const onSuccess = (...args) => {
+        if(!Array.isArray(args) && args.length <= 0) {
+            toast.error('An error occurred while retrieving your WorldCoin data. Please try again.');
+            return;
+        };
+
+        const authData = args[0];
+        setWorldCoinAuth(authData);
+        router.push('/dashboard');
+        // window.location.replace("/dashboard");
     };
   
 
@@ -22,7 +31,7 @@ const WorldCoinConnect = () => {
             action="create-hold-habit"
             false
             verification_level={VerificationLevel.Device}
-            handleVerify={verifyProof}
+            // handleVerify={verifyProof}
             onSuccess={onSuccess}>
             {({ open }) => (
                 <Button 

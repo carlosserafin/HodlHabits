@@ -21,7 +21,7 @@ const LayoutWrapper = ({ children }) => {
       <Toaster position="top-left" />
       <div className="w-full">
         { (isDynamicAuth || isWorldCoinAuth) && <Nav /> }
-        <main className="mt-6 flex w-full flex-col items-center">
+        <main className="flex w-full flex-col items-center">
           { children }          
         </main>
       </div>

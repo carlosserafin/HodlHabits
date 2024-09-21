@@ -5,7 +5,6 @@ import { Icon } from "@iconify/react"
 import DirectLinkModal from "./DirectLinkModal"
 import { useState, useCallback } from "react"
 
-// Utility debounce function
 const debounce = (func, delay) => {
   let timeout;
   return (...args) => {
@@ -16,7 +15,7 @@ const debounce = (func, delay) => {
   };
 }
 
-const HeaderVideoSearch = ({ searchVideos, clearVideos }) => {
+const HeaderVideoSearch = ({ searchVideos, clearVideos, handleAddVideo, searchVideoDetails }) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useCallback(debounce(searchVideos, 500), []);
@@ -65,6 +64,8 @@ const HeaderVideoSearch = ({ searchVideos, clearVideos }) => {
         <DirectLinkModal 
           isOpen={isOpen} 
           onClose={onClose}
+          handleAddVideo={handleAddVideo}
+          searchVideoDetails={searchVideoDetails}
         />
     </>
   )

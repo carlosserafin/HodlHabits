@@ -30,6 +30,7 @@ import { useAppStore } from "@/context/state";
 import { DynamicWidget, useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useTransitionRouter } from "next-view-transitions";
 import { useEffect } from "react";
+import WorldCoinWidgetData from "@/components/Auth/WorldCoinWidgetData";
 
 const Nav = () => {
   const { isDynamicAuth, isWorldCoinAuth, handleLogout } = useAppStore();
@@ -37,7 +38,7 @@ const Nav = () => {
   const router = useTransitionRouter();
 
   useEffect(() => {
-    if (isLoggedIn) return;
+    if (isLoggedIn || !isDynamicAuth) return;
     
     handleLogout();
     router.push("/");
@@ -140,8 +141,13 @@ const Nav = () => {
             </Dropdown> */}
             {
               isDynamicAuth &&
-              <DynamicWidget />
-            } 
+              <DynamicWidget /> 
+            }
+
+            {
+              isWorldCoinAuth &&
+              <WorldCoinWidgetData />
+            }
           </NavbarItem>
         </NavbarContent>
 
