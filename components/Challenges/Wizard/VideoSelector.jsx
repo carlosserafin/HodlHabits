@@ -78,7 +78,7 @@ const TEST_DATA = [
   ]
 
 const VideoSelector = ({ addChallengeVideo, removeChallengeVideo, challengeVideos }) => {
-    const isTest = true;
+    const isTest = false;
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentVideoId, setCurrentVideoId] = useState(null);
