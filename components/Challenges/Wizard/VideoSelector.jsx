@@ -78,7 +78,7 @@ const TEST_DATA = [
   ]
 
 const VideoSelector = ({ addChallengeVideo, removeChallengeVideo, challengeVideos }) => {
-    const isTest = false;
+    const isTest = true;
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentVideoId, setCurrentVideoId] = useState(null);
@@ -92,6 +92,10 @@ const VideoSelector = ({ addChallengeVideo, removeChallengeVideo, challengeVideo
     const handleRemoveVideo = (videoId) => {
       setSelectedVideos((prev) => prev.filter((video) => video.videoId !== videoId));
       removeChallengeVideo(videoId);
+    }
+
+    const clearVideos = () => {
+      setVideos([]);
     }
 
     // Function to call the API
@@ -125,7 +129,7 @@ const VideoSelector = ({ addChallengeVideo, removeChallengeVideo, challengeVideo
       <div className="py-4 text-default-500">
         Select videos for your challenge.
       </div>
-      <HeaderVideoSearch searchVideos={searchVideos} />
+      <HeaderVideoSearch searchVideos={searchVideos} clearVideos={clearVideos} />
       <div className="flex flex-col items-center justify-center w-full">
         {loading ? (
           <Spinner color="white" />

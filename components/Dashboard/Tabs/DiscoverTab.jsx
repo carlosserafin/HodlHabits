@@ -78,11 +78,14 @@ const TEST_DATA = [
 ]
 
 const DiscoverTab = () => {
-  const isTest = false;
+  const isTest = true;
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentVideoId, setCurrentVideoId] = useState(null);
 
+  const clearVideos = () => {
+    setVideos([]);
+  }
 
   // Function to call the API
   const searchVideos = async (query) => {
@@ -109,7 +112,7 @@ const DiscoverTab = () => {
 
   return (
     <section className="flex flex-col min-h-[calc(100dvh-20rem)]">
-      <HeaderVideoSearch searchVideos={searchVideos} />
+      <HeaderVideoSearch searchVideos={searchVideos} clearVideos={clearVideos} />
       <div className="flex flex-col items-center justify-center w-full h-full">
         {loading ? (
           <Spinner color="white" />

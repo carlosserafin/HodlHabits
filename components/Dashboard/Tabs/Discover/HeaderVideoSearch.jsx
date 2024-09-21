@@ -16,7 +16,7 @@ const debounce = (func, delay) => {
   };
 }
 
-const HeaderVideoSearch = ({ searchVideos }) => {
+const HeaderVideoSearch = ({ searchVideos, clearVideos }) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useCallback(debounce(searchVideos, 500), []);
@@ -27,7 +27,7 @@ const HeaderVideoSearch = ({ searchVideos }) => {
     if (value.trim()) {
       debouncedSearch(value);
     } else {
-      setVideos([]); // Reset videos if the search input is empty
+      clearVideos();
     }
   };
 
